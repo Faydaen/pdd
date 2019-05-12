@@ -6,7 +6,6 @@
 
 <script>
 import Pdd from './components/Pdd.vue'
-
 export default {
   name: 'app',
   components: {
