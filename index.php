@@ -14,7 +14,8 @@ $data = [
 //        'comment' => '',
 //        'tags' => [],
 //    ],
-    [
+    'Б1-В2' => [
+
         'title' => 'Разрешен ли Вам съезд на дорогу с грунтовым покрытием?',
         'img' => 'n1_2.jpg',
         'answers' => [
@@ -22,7 +23,7 @@ $data = [
             '2. Разрешен только при технической неисправности транспортного средства.',
             '3. Запрещен.',
         ],
-        'right_answer' => 0,
+        'right_answer' => '0',
         'comment' => '',
         'tags' => [],
     ]
@@ -43,8 +44,17 @@ $data = [
 //}
 
 
+$id = array_rand($data);
+$b = $data[$id];
 
-$b = $data[array_rand($data)];
+if (isset($_GET['answers'])) {
+
+    $id = $_GET['id'];
+//    var_dump($_GET['answers']);
+    if ($_GET['answers'] == $data[$id]['right_answer']) {
+        $isRight = true;
+    }
+}
 
 ?>
 
@@ -59,27 +69,28 @@ $b = $data[array_rand($data)];
 <body>
 
 
-
-
 <div class="container">
     <div class="notification">
         <form method="get">
-        <?php if(!empty($b['img'])): ?>
-            <img src="./img/<?= $b['img'] ?>">
+            <input type="hidden" name="id" value="<?= $id ?>">
+            <?php if (!empty($b['img'])): ?>
+                <img src="./img/<?= $b['img'] ?>">
+                <br>
+            <?php endif ?>
+            <div>
+                <strong><?= $b['title'] ?></strong>
+            </div>
             <br>
-        <?php endif ?>
-        <div>
-            <strong><?= $b['title'] ?></strong>
-        </div>
-        <br>
 
-        <?php foreach ($b['answers'] as $answer): ?>
-            <button type="submit" style="text-align: left; display: block; width: 100%" class="button"><?= $answer ?></button><br>
-        <?php endforeach; ?>
+            <?php foreach ($b['answers'] as $q=>$answer): ?>
+                <button name=answers value="<?= $q ?>" type="submit" style="text-align: left; display: block; width: 100%" class="button">
+                    <?= $answer ?>
+                </button>
+                <br>
+            <?php endforeach; ?>
         </form>
 
 
-        
     </div>
 </div>
 
