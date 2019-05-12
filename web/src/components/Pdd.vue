@@ -1,21 +1,24 @@
 <template>
     <div>
 
-        <pre>{{pdd}}</pre>
+<!--        <pre>{{pdd}}</pre>-->
+        <br>
+        <br>
+        <br>
 
         <div class="container">
             <div class="notification">
                 <strong>{{pdd.title}}</strong>
 
-                <div v-if="pdd.img != ''">
+                <div v-if="pdd.img !== ''">
                     <img :src="'http://pdd.my/img/' + pdd.img" alt="">
                 </div>
 
                 <br>
                 <br>
 
-                <template v-for="answer in pdd.answers">
-                    <button style="text-align: left; display: block; width: 100%" class="button">
+                <template v-for="(answer, index)  in pdd.answers">
+                    <button @click="say_answer(index)" style="text-align: left; display: block; width: 100%" class="button">
                         {{ answer }}
                     </button>
                     <br>
@@ -31,6 +34,13 @@
 <script>
     import axios from 'axios'
 
+    // class question {
+    //     constructor(question) {
+    //         this.name = name;
+    //     }
+    //
+    // }
+
     export default {
         data() {
             return {
@@ -42,7 +52,11 @@
                 this.pdd = response.data;
             });
         },
-        methods: {}
+        methods: {
+            say_answer(index){
+                alert(index)
+            }
+        }
     }
 </script>
 
