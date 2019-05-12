@@ -1,7 +1,10 @@
 <template>
     <div>
 
-        <pre>{{pdd}}</pre>
+        <!--
+            <pre>{{pdd}}</pre>
+        -->
+
         <br>
         <br>
         <br>
@@ -18,7 +21,8 @@
                 <br>
 
                 <template v-for="(answer, index)  in pdd.answers">
-                    <button @click="say_answer(index)" style="text-align: left; display: block; width: 100%" class="button">
+                    <button :class="answer.class" @click="say_answer(index)"
+                            style="text-align: left; display: block; width: 100%" class="button">
                         {{ answer.text }}
                     </button>
                     <br>
@@ -39,17 +43,16 @@
 
         constructor(question) {
             this.title = question.title;
-            if (question.img){
-                this.img = 'http://pdd.my/img/'+question.img;
-            }
-            else {
+            if (question.img) {
+                this.img = 'http://pdd.my/img/' + question.img;
+            } else {
                 this.img = null;
             }
 
             this.answers = [];
-            question.answers.forEach((answer, index)=>{
+            question.answers.forEach((answer, index) => {
                 this.answers.push({
-                    'text':answer,
+                    'text': answer,
                     'class': 'is-white', //is-danger is-white is-success
                     'is_right': (index === question.right_answer)
                 })
@@ -58,8 +61,24 @@
             this.tags = question.tags;
         }
 
+        answer(my_answer) {
+            this.answers = this.answers.map((answer, index) => {
+                let cssClass = 'is-white';
 
-
+                if (answer.is_right) {
+                    cssClass = 'is-success'
+                } else {
+                    if (my_answer === index) {
+                        cssClass = 'is-danger'
+                    }
+                }
+                return {
+                    text: answer.text,
+                    is_right: answer.is_right,
+                    class: cssClass
+                }
+            });
+        }
     }
 
     export default {
@@ -74,8 +93,8 @@
             });
         },
         methods: {
-            say_answer(index){
-                alert(index)
+            say_answer(index) {
+                this.pdd.answer(index)
             }
         }
     }
