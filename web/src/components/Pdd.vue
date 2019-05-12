@@ -1,7 +1,7 @@
 <template>
     <div>
 
-<!--        <pre>{{pdd}}</pre>-->
+        <pre>{{pdd}}</pre>
         <br>
         <br>
         <br>
@@ -10,8 +10,8 @@
             <div class="notification">
                 <strong>{{pdd.title}}</strong>
 
-                <div v-if="pdd.img !== ''">
-                    <img :src="'http://pdd.my/img/' + pdd.img" alt="">
+                <div v-if="pdd.img">
+                    <img :src="pdd.img" alt="">
                 </div>
 
                 <br>
@@ -19,7 +19,7 @@
 
                 <template v-for="(answer, index)  in pdd.answers">
                     <button @click="say_answer(index)" style="text-align: left; display: block; width: 100%" class="button">
-                        {{ answer }}
+                        {{ answer.text }}
                     </button>
                     <br>
                 </template>
@@ -34,12 +34,33 @@
 <script>
     import axios from 'axios'
 
-    // class question {
-    //     constructor(question) {
-    //         this.name = name;
-    //     }
-    //
-    // }
+
+    class question {
+
+        constructor(question) {
+            this.title = question.title;
+            if (question.img){
+                this.img = 'http://pdd.my/img/'+question.img;
+            }
+            else {
+                this.img = null;
+            }
+
+            this.answers = [];
+            question.answers.forEach((answer, index)=>{
+                this.answers.push({
+                    'text':answer,
+                    'class': 'is-white', //is-danger is-white is-success
+                    'is_right': (index === question.right_answer)
+                })
+            });
+            this.comment = question.comment;
+            this.tags = question.tags;
+        }
+
+
+
+    }
 
     export default {
         data() {
@@ -49,7 +70,7 @@
         },
         created() {
             axios.get('http://pdd.my/').then(response => {
-                this.pdd = response.data;
+                this.pdd = new question(response.data);
             });
         },
         methods: {
