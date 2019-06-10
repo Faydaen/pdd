@@ -28,6 +28,11 @@
                     <br>
                 </template>
 
+                <div class="spoilerLink" @click="toggleSpoiler">Информация</div>
+                <div v-if="showSpoiler">
+                    Информация
+                </div>
+
             </div>
         </div>
 
@@ -84,7 +89,8 @@
     export default {
         data() {
             return {
-                pdd: {}
+                pdd: {},
+                showSpoiler:false,
             }
         },
         created() {
@@ -95,6 +101,9 @@
         methods: {
             say_answer(index) {
                 this.pdd.answer(index)
+            },
+            toggleSpoiler(){
+                this.showSpoiler = !this.showSpoiler;
             }
         }
     }
@@ -102,4 +111,11 @@
 
 <style>
     @import "../assets/css/bulma.min.css";
+
+    .spoilerLink {
+        color: #7a77e6;
+        cursor: pointer;
+        border-bottom: dashed 1px #7a77e6;
+        display: inline-block;
+    }
 </style>
